@@ -9,7 +9,7 @@
 #include<linux/cdev.h>
 #include<linux/fs.h>
 #include<linux/slab.h>
-#include<linux/uaccess.h>
+#include<asm/uaccess.h>
 
 /*
  * File operations Functions Prototypes
@@ -23,7 +23,7 @@ static int pit_release(struct inode *, struct file *);
  * Saves the Major and Minor number
  */
 static dev_t pit_dev = 0;
-
+static char buf;
 /*
  * Devce structure. cbuff is on byte memory space
  * would be used to read and write a byte.

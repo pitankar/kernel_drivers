@@ -8,25 +8,31 @@
 
 // Open
 static int pit_open(struct inode *inode, struct file *filp){
-	//TODO
+        printk(KERN_ALERT "pit: OPEN call\n");
 	return 0;
 }
 
 // Read
-static ssize_t pit_read(struct file *inode, char *buff, size_t count, loff_t *off){
-	//TODO
-	return 0;
+static ssize_t pit_read(struct file *fp, char *buff, size_t count, loff_t *off){
+        count = 1;
+        *off  = 0;
+        copy_to_user( buff, &buf, 1  );
+        printk(KERN_ALERT "pit: READ call");	
+	return 1;
 }
 
 // Write
-static ssize_t pit_write (struct file *inode, const char *buff, size_t count, loff_t *off){
-	//TODO
-	return 0;
+static ssize_t pit_write (struct file *fp, const char *buff, size_t count, loff_t *off){
+	count = 1;
+        *off  = 0;
+        copy_from_user( &buf, buff, 1 );
+        printk(KERN_ALERT "pit: WRITE call");
+	return 1;
 }
 
 // Release
 static int pit_release(struct inode *inode, struct file *filp){
-	//TODO
+	printk(KERN_ALERT "pit: RELEASE call");
 	return 0;
 }
 
@@ -34,7 +40,7 @@ static int pit_release(struct inode *inode, struct file *filp){
 static int _init_(void){
     // Get a Major Number
     if ( 0 == alloc_chrdev_region( &pit_dev, 0, 1, "pit") )
-      printk( KERN_ALERT "__ pit is here __ [ MAJOR:%d ]", MAJOR(pit_dev) );
+      printk( KERN_EMERG "pit: __pit is here __ [ MAJOR:%d, MINOR:%d ]", MAJOR(pit_dev), MINOR(pit_dev) );
     else
       printk( KERN_ALERT "Failed to Register Device" );
     
@@ -42,6 +48,8 @@ static int _init_(void){
     memset( pit_dev_area, 0, sizeof(struct dev_area) );
 
     pit_dev_area->pit_cdev.owner = THIS_MODULE;
+    cdev_init( &pit_dev_area->pit_cdev, &pit_fops );
+    cdev_add( &pit_dev_area->pit_cdev, pit_dev, 1 );
     return 0;
 }
 
