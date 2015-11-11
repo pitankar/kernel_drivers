@@ -17,7 +17,7 @@ static int _init_(void){
     
     // Get a Major Number
     if ( 0 == alloc_chrdev_region( &pit_dev, 0, 1, "pit") )
-      printk(KERN_ALERT "__ pit is here __");
+      printk(KERN_ALERT "__ pit is here __ [ MAJOR:%d ]", pit_dev);
     else
       printk(KERN_ALERT "Failed to Register Device");
     
