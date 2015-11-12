@@ -14,18 +14,12 @@ static int pit_open(struct inode *inode, struct file *filp){
 
 // Read
 static ssize_t pit_read(struct file *fp, char *buff, size_t count, loff_t *off){
-        count = 1;
-        *off  = 0;
-        copy_to_user( buff, &buf, 1  );
         printk(KERN_ALERT "pit: READ call");	
 	return 1;
 }
 
 // Write
 static ssize_t pit_write (struct file *fp, const char *buff, size_t count, loff_t *off){
-	count = 1;
-        *off  = 0;
-        copy_from_user( &buf, buff, 1 );
         printk(KERN_ALERT "pit: WRITE call");
 	return 1;
 }

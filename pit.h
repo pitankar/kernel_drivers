@@ -4,6 +4,7 @@
  * Date:   10th Nov' 2015
  ******************************************/
 
+#include<linux/init.h>
 #include<linux/kernel.h>
 #include<linux/module.h>
 #include<linux/cdev.h>
