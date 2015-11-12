@@ -30,7 +30,7 @@ static dev_t pit_dev = 0;
  * would be used to read and write a byte.
  */
 struct dev_area{
-  int cbuff;
+  char cbuff;
   struct mutex m;
   struct cdev pit_cdev;
 } *pit_dev_area;

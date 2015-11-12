@@ -18,20 +18,25 @@ static int pit_open(struct inode *inode, struct file *filp){
 }
 
 // Read
-static ssize_t pit_read(struct file *fp, char *buff, size_t count, loff_t *off){
+static ssize_t pit_read(struct file *fp, char __user *buff, size_t count, loff_t *off){
     struct dev_area *dev;
     dev = fp->private_data;
 
-    mutex_lock_interruptible( &dev->m );
-      copy_to_user( buff, &dev->cbuff, 1);
-      printk(KERN_ALERT "pit: READ call");	
-    mutex_unlock( &dev->m );
-    
-    return count;
+    if( *off == 0 ){
+      mutex_lock_interruptible( &dev->m );
+        copy_to_user( buff, &dev->cbuff, 4);
+        printk(KERN_ALERT "pit: READ call");	
+      mutex_unlock( &dev->m );
+
+      (*off)++;
+      return 1;
+    }
+
+    return 0;
 }
 
 // Write
-static ssize_t pit_write (struct file *fp, const char *buff, size_t count, loff_t *off){
+static ssize_t pit_write (struct file *fp, const char __user *buff, size_t count, loff_t *off){
     struct dev_area *dev;
 
     dev = fp->private_data;
