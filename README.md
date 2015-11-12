@@ -12,34 +12,34 @@ The Device Driver presented here is supposed to be the most basic one. As of now
 - get into the folder where these files live.
 - Change mode to root. Execute sudo su. Enter password. Done.
 - Enter the command:
-  ```sh 
+  ``` 
   $ make clean
   ```
 - Followed by:
-  ```sh
+  ```
   $ make all
   ```
 - Assuming no error occurs. Execute the following:
-   ```sh
+  ```
   $ insmod pit.ko
   ```
 - The Kernel module is now pushed into the kernel. In order for you to be able to use it. You need to create a file in /dev folder.
 - You would need the major number before you proceed. Get that by executing the following:
-  ```sh
+  ```
   $ dmesg | tail -10 | grep MAJOR
   ```
 - you should see a string ***[ MAJOR: xxx ]*** where ***xxx*** is the number you need.
 - Create an entry in ***/dev*** as follows:
-  ```sh
+  ```
   $ mknod /dev/pit c xxx 0
   ```
 - Now you can read and write a character into the file /dev/pit (the device)
 - To write use:
-  ```sh
+  ```
   $ echo "a">/dev/pit
   ```
 - To read use:
-  ```sh
+  ```
   $ cat /dev/pit
   ```
 - Done. That is what the driver does.
