@@ -24,13 +24,14 @@ static int pit_release(struct inode *, struct file *);
  * Saves the Major and Minor number
  */
 static dev_t pit_dev = 0;
-static char buf;
+
 /*
  * Devce structure. cbuff is on byte memory space
  * would be used to read and write a byte.
  */
 struct dev_area{
-  char cbuff;
+  int cbuff;
+  struct mutex m;
   struct cdev pit_cdev;
 } *pit_dev_area;
 
