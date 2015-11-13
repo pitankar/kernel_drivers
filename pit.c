@@ -68,7 +68,9 @@ static int _init_(void){
     pit_dev_area->pit_cdev.owner = THIS_MODULE;
     cdev_init( &pit_dev_area->pit_cdev, &pit_fops );
 
-    mutex_init(&pit_dev_area->m);
+    pit_class = class_create( THIS_MODULE, "chardrv" );
+    device_create( pit_class, NULL, pit_dev, NULL, "pit" );
+    mutex_init( &pit_dev_area->m );
 
     cdev_add( &pit_dev_area->pit_cdev, pit_dev, 1 );
     return 0;
@@ -76,8 +78,10 @@ static int _init_(void){
 
 // Exit Module
 void _exit_( void ){
-    unregister_chrdev_region( pit_dev, 1 );
     cdev_del( &pit_dev_area->pit_cdev );
+    device_destroy( pit_class, pit_dev );
+    class_destroy( pit_class );
+    unregister_chrdev_region( pit_dev, 1 );
     kfree( pit_dev_area );
     printk( KERN_ALERT " __pit was here__ " );
 }

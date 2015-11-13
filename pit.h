@@ -11,6 +11,7 @@
 #include<linux/fs.h>
 #include<linux/slab.h>
 #include<asm/uaccess.h>
+#include<linux/device.h>
 
 /*
  * File operations Functions Prototypes
@@ -24,6 +25,11 @@ static int pit_release(struct inode *, struct file *);
  * Saves the Major and Minor number
  */
 static dev_t pit_dev = 0;
+
+/*
+ * Create a Class
+ */
+static struct class *pit_class;
 
 /*
  * Devce structure. cbuff is on byte memory space

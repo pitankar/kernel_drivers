@@ -19,7 +19,6 @@ then
     echo "Module not present. Cannot Unload. Exitting."
     exit
   fi
-  rm /dev/pit
   echo "Module Removed from Kernel. Device /dev/pit is removed."
   
   # Keep the directory Clean
@@ -45,7 +44,6 @@ fi
 if [ $1 = "add" ]
 then
   insmod pit.ko
-  mknod /dev/pit c 244 0
   echo "Module Pushed into the Kernel. Device Path /dev/pit"
   
   # Keep the directory Clean
